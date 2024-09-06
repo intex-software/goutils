@@ -2,7 +2,6 @@ package schema
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -12,6 +11,20 @@ import (
 
 func GetSchemaPath(configPath string) (schemaPath string) {
 	return internal.ResolveSibling(configPath, ".schema")
+}
+
+func WriteJsonSchema(schemaPath string, config any) (err error) {
+	reflectType, err := Generate(reflect.TypeOf(config))
+	if err != nil {
+		return
+	}
+	schema, err := json.MarshalIndent(reflectType, "", " ")
+	if err != nil {
+		return
+	}
+
+	err = os.WriteFile(schemaPath, schema, 0644)
+	return
 }
 
 func WriteJsonConfig(configPath string, config any) (schemaPath string, err error) {
@@ -33,16 +46,6 @@ func WriteJsonConfig(configPath string, config any) (schemaPath string, err erro
 		}
 	}
 
-	reflectType, err := Generate(reflect.TypeOf(config))
-	if err != nil {
-		return
-	}
-	schema, err := json.MarshalIndent(reflectType, "", " ")
-	if err != nil {
-		return
-	}
-
-	fmt.Println("Writing schema to", schemaPath)
-	err = os.WriteFile(schemaPath, schema, 0644)
+	err = WriteJsonSchema(schemaPath, config)
 	return
 }
