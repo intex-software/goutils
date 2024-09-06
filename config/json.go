@@ -9,7 +9,7 @@ import (
 	"fiurthorn.de/goutils/internal"
 )
 
-func GetSchemaPath(configPath string) (schemaPath string) {
+func GetSchemaSibling(configPath string) (schemaPath string) {
 	return internal.ResolveSibling(configPath, ".schema")
 }
 
@@ -27,22 +27,21 @@ func WriteJsonSchema(schemaPath string, config any) (err error) {
 	return
 }
 
-func WriteJsonConfig(configPath string, config any) (schemaPath string, err error) {
+func WriteJsonConfigAndSchema(configPath, schemaPath string, config any) (err error) {
 	configName := filepath.Base(configPath)
-	schemaPath = GetSchemaPath(configPath)
 
 	if f, err := os.OpenFile(configName, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0644); err != nil {
-		return "", err
+		return err
 	} else {
 		defer f.Close()
 
 		schema, err := json.MarshalIndent(config, "", " ")
 		if err != nil {
-			return "", err
+			return err
 		}
 
 		if _, err := f.Write(schema); err != nil {
-			return "", err
+			return err
 		}
 	}
 
