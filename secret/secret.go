@@ -29,7 +29,7 @@ func FromString(raw string) (secret *Secret) {
 	return &sec
 }
 
-func FromBytes(raw string) (secret *Secret) {
+func FromBytes(raw []byte) (secret *Secret) {
 	sec := Secret(raw)
 	return &sec
 }
