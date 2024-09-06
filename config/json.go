@@ -14,7 +14,7 @@ func GetSchemaPath(configPath string) (schemaPath string) {
 }
 
 func WriteJsonSchema(schemaPath string, config any) (err error) {
-	reflectType, err := Generate(reflect.TypeOf(config))
+	reflectType, err := GenerateSchema(reflect.TypeOf(config))
 	if err != nil {
 		return
 	}

@@ -70,15 +70,9 @@ var (
 	// byteSliceType = reflect.TypeOf([]byte(nil))
 )
 
-// I returns a pointer to the given int. Useful helper function for pointer
-// schema validators like MaxLength or MinItems.
-func I(value uint64) *uint64 {
-	return &value
-}
-
-// F returns a pointer to the given float64. Useful helper function for pointer
+// ptr returns a pointer to the given float64. Useful helper function for pointer
 // schema validators like Maximum or Minimum.
-func F(value float64) *float64 {
+func ptr[T any](value T) *T {
 	return &value
 }
 
@@ -196,8 +190,8 @@ func (s *Schema) RemoveProperty(name string) {
 // Generate creates a JSON schema for a Go type. Struct field tags
 // can be used to provide additional metadata such as descriptions and
 // validation.
-func Generate(t reflect.Type) (*Schema, error) {
-	return GenerateWithMode(t, ModeAll, nil)
+func GenerateSchema(t reflect.Type) (*Schema, error) {
+	return GenerateSchemaWithMode(t, ModeAll, nil)
 }
 
 // getFields performs a breadth-first search for all fields including embedded
@@ -255,7 +249,7 @@ func generateFromField(f reflect.StructField, mode Mode) (string, bool, *Schema,
 		return name, false, nil, nil
 	}
 
-	s, err := GenerateWithMode(f.Type, mode, nil)
+	s, err := GenerateSchemaWithMode(f.Type, mode, nil)
 	if err != nil {
 		return name, false, nil, err
 	}
@@ -467,13 +461,13 @@ func generateFromField(f reflect.StructField, mode Mode) (string, bool, *Schema,
 	return name, optional, s, nil
 }
 
-// GenerateWithMode creates a JSON schema for a Go type. Struct field
+// GenerateSchemaWithMode creates a JSON schema for a Go type. Struct field
 // tags can be used to provide additional metadata such as descriptions and
 // validation. The mode can be all, read, or write. In read or write mode
 // any field that is marked as the opposite will be excluded, e.g. a
 // write-only field would not be included in read mode. If a schema is given
 // as input, add to it, otherwise creates a new schema.
-func GenerateWithMode(t reflect.Type, mode Mode, schema *Schema) (*Schema, error) {
+func GenerateSchemaWithMode(t reflect.Type, mode Mode, schema *Schema) (*Schema, error) {
 	if schema == nil {
 		schema = &Schema{}
 	}
@@ -540,7 +534,7 @@ func GenerateWithMode(t reflect.Type, mode Mode, schema *Schema) (*Schema, error
 
 	case reflect.Map:
 		schema.Type = TypeObject
-		s, err := GenerateWithMode(t.Elem(), mode, nil)
+		s, err := GenerateSchemaWithMode(t.Elem(), mode, nil)
 		if err != nil {
 			return nil, err
 		}
@@ -551,7 +545,7 @@ func GenerateWithMode(t reflect.Type, mode Mode, schema *Schema) (*Schema, error
 			schema.Type = TypeString
 		} else {
 			schema.Type = TypeArray
-			s, err := GenerateWithMode(t.Elem(), mode, nil)
+			s, err := GenerateSchemaWithMode(t.Elem(), mode, nil)
 			if err != nil {
 				return nil, err
 			}
@@ -567,11 +561,11 @@ func GenerateWithMode(t reflect.Type, mode Mode, schema *Schema) (*Schema, error
 		// Unsigned integers can't be negative.
 		schema.Type = TypeInteger
 		schema.Format = "int32"
-		schema.Minimum = F(0.0)
+		schema.Minimum = ptr(0.0)
 	case reflect.Uint64:
 		schema.Type = TypeInteger
 		schema.Format = "int64"
-		schema.Minimum = F(0.0)
+		schema.Minimum = ptr(0.0)
 	case reflect.Float32:
 		schema.Type = TypeNumber
 		schema.Format = "float"
@@ -583,7 +577,7 @@ func GenerateWithMode(t reflect.Type, mode Mode, schema *Schema) (*Schema, error
 	case reflect.String:
 		schema.Type = TypeString
 	case reflect.Ptr:
-		return GenerateWithMode(t.Elem(), mode, schema)
+		return GenerateSchemaWithMode(t.Elem(), mode, schema)
 	case reflect.Interface:
 		// Interfaces can be any type.
 	case reflect.Uintptr, reflect.UnsafePointer, reflect.Func:
