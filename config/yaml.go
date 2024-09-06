@@ -7,7 +7,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func WriteYamlConfigAndSchema(configPath, schemaPath string, config any) (err error) {
+func WriteYamlConfig(configPath, schemaPath string, config any) (err error) {
 	configName := filepath.Base(configPath)
 	schemaName := filepath.Base(schemaPath)
 
@@ -27,6 +27,5 @@ func WriteYamlConfigAndSchema(configPath, schemaPath string, config any) (err er
 		}
 	}
 
-	err = WriteJsonSchema(schemaPath, config)
 	return
 }
