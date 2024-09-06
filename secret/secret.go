@@ -23,3 +23,22 @@ func (k *Secret) Pointer() *string {
 func (k *Secret) Empty() bool {
 	return len(*k) == 0
 }
+
+func FromString(raw string) (secret *Secret) {
+	sec := Secret(raw)
+	return &sec
+}
+
+func FromBytes(raw string) (secret *Secret) {
+	sec := Secret(raw)
+	return &sec
+}
+
+func Parse(raw string) (secret *Secret, err error) {
+	if sec, err := newSecret(raw); err != nil {
+		return nil, err
+	} else {
+		secret = &sec
+	}
+	return
+}
