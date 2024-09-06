@@ -29,7 +29,12 @@ func (k *Secret) UnmarshalYAML(data *yaml.Node) (err error) {
 	return
 }
 
-func New(raw string) (secret *Secret, err error) {
+func New(raw string) (secret *Secret) {
+	sec := Secret(raw)
+	return &sec
+}
+
+func FromString(raw string) (secret *Secret, err error) {
 	if sec, err := newSecret(raw); err != nil {
 		return nil, err
 	} else {
