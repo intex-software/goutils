@@ -19,9 +19,9 @@
 // SOFTWARE.
 //
 
-// Package schema implements OpenAPI 3 compatible JSON Schema which can be
+// package config implements OpenAPI 3 compatible JSON Schema which can be
 // generated from structs.
-package schema
+package config
 
 import (
 	"encoding/json"
