@@ -8,10 +8,9 @@ import (
 )
 
 func WriteYamlConfig(configPath, schemaPath string, config any) (err error) {
-	configName := filepath.Base(configPath)
 	schemaName := filepath.Base(schemaPath)
 
-	if f, err := os.OpenFile(configName, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0644); err != nil {
+	if f, err := os.OpenFile(configPath, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0644); err != nil {
 		return err
 	} else {
 		defer f.Close()
