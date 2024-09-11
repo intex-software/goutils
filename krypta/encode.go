@@ -7,7 +7,7 @@ import (
 	"io"
 	"strings"
 
-	"fiurthorn.de/goutils/internal"
+	"github.com/intex-software/goutils/internal"
 )
 
 func (c krypta) isEncoded(val string) bool {

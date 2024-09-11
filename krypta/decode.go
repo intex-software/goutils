@@ -5,7 +5,7 @@ import (
 	"crypto/cipher"
 	"errors"
 
-	"fiurthorn.de/goutils/internal"
+	"github.com/intex-software/goutils/internal"
 )
 
 func (c krypta) Decode(encoded string) (string, error) {

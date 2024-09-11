@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"strings"
 
-	"fiurthorn.de/goutils/obfuscate"
+	"github.com/intex-software/goutils/obfuscate"
 )
 
 func (k *Secret) MarshalJSON() (data []byte, err error) {

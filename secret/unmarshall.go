@@ -5,8 +5,8 @@ import (
 	"math"
 	"strings"
 
-	"fiurthorn.de/goutils/internal"
-	"fiurthorn.de/goutils/obfuscate"
+	"github.com/intex-software/goutils/internal"
+	"github.com/intex-software/goutils/obfuscate"
 	"gopkg.in/yaml.v3"
 )
 

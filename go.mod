@@ -1,4 +1,4 @@
-module fiurthorn.de/goutils
+module github.com/intex-software/goutils
 
 go 1.23
 

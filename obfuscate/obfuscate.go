@@ -3,7 +3,7 @@ package obfuscate
 import (
 	"math/rand"
 
-	"fiurthorn.de/goutils/internal"
+	"github.com/intex-software/goutils/internal"
 )
 
 // ObfuscateString takes a string content and obfuscates it by encoding it as base32.

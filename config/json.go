@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"reflect"
 
-	"fiurthorn.de/goutils/internal"
+	"github.com/intex-software/goutils/internal"
 )
 
 func GetSchemaSibling(configPath string) (schemaPath string) {
