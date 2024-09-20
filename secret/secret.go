@@ -8,19 +8,28 @@ var (
 type Secret []byte
 
 func (k *Secret) Bytes() []byte {
-	return *k
-}
-
-func (k *Secret) String() string {
-	return string(*k)
-}
-
-func (k *Secret) StringPointer() *string {
 	if k == nil {
 		return nil
 	}
 
-	p := string(*k)
+	return *k
+}
+
+func (k *Secret) String() string {
+	if k == nil {
+		return ""
+	}
+
+	return string(*k)
+}
+
+func (k *Secret) StringPointer() *string {
+	var p string
+	if k == nil {
+		return &p
+	}
+
+	p = string(*k)
 	return &p
 }
 
