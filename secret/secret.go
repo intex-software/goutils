@@ -15,13 +15,17 @@ func (k *Secret) String() string {
 	return string(*k)
 }
 
-func (k *Secret) Pointer() *string {
+func (k *Secret) StringPointer() *string {
+	if k == nil {
+		return nil
+	}
+
 	p := string(*k)
 	return &p
 }
 
 func (k *Secret) Empty() bool {
-	return len(*k) == 0
+	return k == nil || len(*k) == 0
 }
 
 func FromString(raw string) (secret *Secret) {
