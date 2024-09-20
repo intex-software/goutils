@@ -28,6 +28,10 @@ func (k *Secret) Empty() bool {
 	return k == nil || len(*k) == 0
 }
 
+func (k *Secret) NotEmpty() bool {
+	return k != nil && len(*k) > 0
+}
+
 func FromString(raw string) (secret *Secret) {
 	sec := Secret(raw)
 	return &sec
