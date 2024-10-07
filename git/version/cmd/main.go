@@ -8,16 +8,18 @@ import (
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		panic("Usage: version [windows|version]")
+	windows := len(os.Args) > 1 && os.Args[1] == "windows"
+	if ver, err := value(windows); err != nil {
+		panic(err)
+	} else {
+		fmt.Println(ver)
 	}
+}
 
-	switch os.Args[1] {
-	case "windows":
-		fmt.Println(version.Windows())
-	case "version":
-		fmt.Println(version.Git())
-	default:
-		fmt.Println(version.Git())
+func value(windows bool) (string, error) {
+	if windows {
+		return version.Windows()
+	} else {
+		return version.Git()
 	}
 }
