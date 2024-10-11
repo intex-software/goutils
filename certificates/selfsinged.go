@@ -22,7 +22,7 @@ type TlsCertificateResult struct {
 	Accepted []string
 }
 
-func CreateSelfSignedTlsCertificate(acceptedHostNames []string, days int) (data *TlsCertificateResult, err error) {
+func CreateSelfSignedTlsCertificate(acceptedHostNames []string, days time.Duration) (data *TlsCertificateResult, err error) {
 	var dnsnames []string
 	var ips []net.IP
 
@@ -113,7 +113,7 @@ func getDnsNames() (dnsnames []string, addrs []net.IP, err error) {
 	return
 }
 
-func createCertificateAuthority(dnsnames []string, ips []net.IP, names pkix.Name, days int, size int) (*TlsCertificateResult, error) {
+func createCertificateAuthority(dnsnames []string, ips []net.IP, names pkix.Name, days time.Duration, size int) (*TlsCertificateResult, error) {
 	keys, err := ecdsa.GenerateKey(elliptic.P384(), rand.Reader)
 	if err != nil {
 		return nil, fmt.Errorf("unable to generate private keys, error: %s", err)
@@ -129,7 +129,7 @@ func createCertificateAuthority(dnsnames []string, ips []net.IP, names pkix.Name
 		SerialNumber:          serial,
 		Subject:               names,
 		NotBefore:             now.Add(-time.Minute).UTC(),
-		NotAfter:              now.Add(time.Duration(days) * Day),
+		NotAfter:              now.Add(days),
 		BasicConstraintsValid: true,
 		IsCA:                  true,
 		DNSNames:              dnsnames,

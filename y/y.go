@@ -146,7 +146,7 @@ func runFile(i *interp.Interpreter, path string, noAutoImport bool) error {
 	if script = string(b); strings.HasPrefix(script, "#!") {
 		script = strings.Replace(script, "#!", "//", 1)
 		hasSheBang = true
-	} else if strings.HasPrefix(script, "@") {
+	} else if strings.HasPrefix(script, "@y") {
 		script = strings.Replace(script, "@", "//", 2)
 		hasSheBang = true
 	}

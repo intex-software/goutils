@@ -32,7 +32,7 @@ func resolveSibling(filename, extension string) string {
 	return strings.TrimSuffix(filename, oldExt) + extension
 }
 
-func WriteSelfSingedGraphAppCertificates(filename string, days int) (err error) {
+func WriteSelfSingedGraphAppCertificates(filename string, days time.Duration) (err error) {
 	log.Println("Create Azure MsGraph Certificate")
 
 	pemFile := resolveSibling(filename, ".pem")
@@ -64,7 +64,7 @@ func WriteSelfSingedGraphAppCertificates(filename string, days int) (err error) 
 	return
 }
 
-func CreateSelfSingedGraphAppCertificate(days int) (result *MsGraphCertificateResult, err error) {
+func CreateSelfSingedGraphAppCertificate(days time.Duration) (result *MsGraphCertificateResult, err error) {
 	keys, cer, err := createSelfSingedGraphAppCertificate(days)
 	if err != nil {
 		return
@@ -76,7 +76,7 @@ func CreateSelfSingedGraphAppCertificate(days int) (result *MsGraphCertificateRe
 	return
 }
 
-func createSelfSingedGraphAppCertificate(days int) (keys, cer []byte, err error) {
+func createSelfSingedGraphAppCertificate(days time.Duration) (keys, cer []byte, err error) {
 	pKeys, err := rsa.GenerateKey(rand.Reader, 4096)
 	if err != nil {
 		return nil, nil, fmt.Errorf("unable to generate private keys, error: %s", err)
@@ -92,7 +92,7 @@ func createSelfSingedGraphAppCertificate(days int) (keys, cer []byte, err error)
 		SerialNumber:          serial,
 		Subject:               pkix.Name{CommonName: "localhost"},
 		NotBefore:             now.Add(-time.Minute).UTC(),
-		NotAfter:              now.Add(time.Duration(days) * Day),
+		NotAfter:              now.Add(days),
 		BasicConstraintsValid: true,
 		IsCA:                  true,
 		KeyUsage:              x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,
