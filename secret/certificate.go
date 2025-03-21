@@ -7,7 +7,7 @@ import (
 	"golang.org/x/crypto/pkcs12"
 )
 
-func (k *Secret) Pem(password string) (data []byte, err error) {
+func (k *Secret) Certificate(password string) (data []byte, err error) {
 	data = k.Bytes()
 
 	if data[0] == '-' {

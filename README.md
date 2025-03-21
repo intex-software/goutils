@@ -2,6 +2,9 @@
 
 # goutils
 
+- TODO: random id functions
+- TODO: random id functions
+
 ## krypta
 
 ## secret

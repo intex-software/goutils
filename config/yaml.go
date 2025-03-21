@@ -7,6 +7,8 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+//TODO Unmarshal config with header and footer
+
 func WriteYamlConfig(configPath, schemaPath string, config any) (err error) {
 	schemaName := filepath.Base(schemaPath)
 
