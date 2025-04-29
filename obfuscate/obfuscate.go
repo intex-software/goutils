@@ -2,14 +2,15 @@ package obfuscate
 
 import (
 	"math/rand"
+	"strings"
 
 	"github.com/intex-software/goutils/internal"
 )
 
 // ObfuscateString takes a string content and obfuscates it by encoding it as base32.
 // It returns the obfuscated string and an error if any.
-func ObfuscateString(content []byte) (string, error) {
-	return internal.Base32.EncodeToString(ObfuscateBytes(content)), nil
+func ObfuscateString(content []byte) string {
+	return strings.ToLower(internal.Base32.EncodeToString(ObfuscateBytes(content)))
 }
 
 // DeobfuscateString takes an obfuscated content string and returns the deobfuscated secret string.
@@ -29,12 +30,16 @@ func DeobfuscateString(content string) ([]byte, error) {
 // The obfuscated content is then returned as a string.
 func ObfuscateBytes(content []byte) []byte {
 	salt := byte(rand.Intn(256))
+	content = append([]byte{salt}, content...)
 
 	for i := range len(content) {
+		if i == 0 {
+			continue
+		}
+
 		content[i] ^= salt
 	}
 
-	content = append([]byte{salt}, content...)
 	return content
 }
 

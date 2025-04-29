@@ -8,7 +8,7 @@ import (
 )
 
 func (k *Secret) MarshalJSON() (data []byte, err error) {
-	secret, err := k.marshall()
+	secret, err := k.Marshal()
 	if err != nil {
 		return
 	}
@@ -16,7 +16,7 @@ func (k *Secret) MarshalJSON() (data []byte, err error) {
 }
 
 func (k *Secret) MarshalYAML() (data any, err error) {
-	secret, err := k.marshall()
+	secret, err := k.Marshal()
 	if err != nil {
 		return
 	}
@@ -25,12 +25,8 @@ func (k *Secret) MarshalYAML() (data any, err error) {
 	return
 }
 
-func (k *Secret) marshall() (raw string, err error) {
-	raw, err = obfuscate.ObfuscateString(*k)
-	if err != nil {
-		return
-	}
-
+func (k *Secret) Marshal() (raw string, err error) {
+	raw = obfuscate.ObfuscateString(*k)
 	raw = prefix + raw + suffix
 	return
 }

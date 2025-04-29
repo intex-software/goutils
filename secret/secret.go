@@ -1,7 +1,10 @@
 package secret
 
 var (
-	prefix = "$|"
+	prefix1 = "$|"
+	prefix2 = "$:"
+
+	prefix = "$"
 	suffix = "$"
 )
 

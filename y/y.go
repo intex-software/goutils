@@ -34,9 +34,11 @@ func run(arg []string) error {
 	useUnrestricted, _ := strconv.ParseBool(os.Getenv("YAEGI_UNRESTRICTED"))
 	useUnsafe, _ := strconv.ParseBool(os.Getenv("YAEGI_UNSAFE"))
 
+	gopath := build.Default.GOPATH
+
 	rflag := flag.NewFlagSet("y", flag.ContinueOnError)
-	rflag.BoolVar(&install, "install", false, "install under GOPATH")
-	rflag.BoolVar(&transform, "transform", false, "install the current path")
+	rflag.BoolVar(&install, "install", false, fmt.Sprintf("install under GOPATH (%s/bin)", gopath))
+	rflag.BoolVar(&transform, "transform", false, "transform the script to be executable")
 	rflag.BoolVar(&useSyscall, "syscall", useSyscall, "include syscall symbols")
 	rflag.BoolVar(&useUnrestricted, "unrestricted", useUnrestricted, "include unrestricted symbols")
 	rflag.StringVar(&tags, "tags", "", "set a list of build tags")
@@ -54,7 +56,7 @@ func run(arg []string) error {
 	installArgs := ""
 
 	i := interp.New(interp.Options{
-		GoPath:       build.Default.GOPATH,
+		GoPath:       gopath,
 		BuildTags:    strings.Split(tags, ","),
 		Env:          os.Environ(),
 		Unrestricted: useUnrestricted,

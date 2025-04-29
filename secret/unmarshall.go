@@ -30,16 +30,22 @@ func (k *Secret) UnmarshalYAML(data *yaml.Node) (err error) {
 }
 
 func newSecret(raw string) (secret Secret, err error) {
-	if strings.HasPrefix(raw, prefix) && strings.HasSuffix(raw, suffix) {
+	if strings.HasPrefix(raw, prefix2) && strings.HasSuffix(raw, suffix) {
+		raw = raw[len(prefix2) : len(raw)-len(suffix)]
+	} else if strings.HasPrefix(raw, prefix1) && strings.HasSuffix(raw, suffix) {
+		raw = raw[len(prefix1) : len(raw)-len(suffix)]
+	} else if strings.HasPrefix(raw, prefix) && strings.HasSuffix(raw, suffix) {
 		raw = raw[len(prefix) : len(raw)-len(suffix)]
-		bytes, err := obfuscate.DeobfuscateString(raw)
-		if err != nil {
-			return nil, err
-		}
-		secret = Secret(bytes)
 	} else {
 		secret = Secret(raw)
+		return
 	}
+
+	bytes, err := obfuscate.DeobfuscateString(raw)
+	if err != nil {
+		return nil, err
+	}
+	secret = Secret(bytes)
 
 	return
 }
