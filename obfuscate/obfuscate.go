@@ -18,7 +18,7 @@ func ObfuscateString(content []byte) string {
 // If an error occurs during decoding, the original content string is returned along with the error.
 // Otherwise, the deobfuscated secret string is returned along with a nil error.
 func DeobfuscateString(content string) ([]byte, error) {
-	raw, err := internal.Base32.DecodeString(content)
+	raw, err := internal.Base32.DecodeString(strings.ToUpper(content))
 	if err != nil {
 		return []byte(content), err
 	}
