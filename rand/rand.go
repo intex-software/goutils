@@ -3,7 +3,6 @@ package rand
 import (
 	"crypto/rand"
 	"encoding/base32"
-	"strings"
 
 	"github.com/intex-software/goutils/secret"
 )
@@ -18,7 +17,7 @@ func RandomByteSlice(size int) []byte {
 
 func RandomString(size int) string {
 	token := RandomByteSlice(size)
-	return strings.ToLower(base32Encoder.EncodeToString(token))
+	return base32Encoder.EncodeToString(token)
 }
 
 func RandomLength(size int) int {
@@ -31,11 +30,11 @@ func NewSecret(size int) *secret.Secret {
 }
 
 func EncodeBase32(secret []byte) string {
-	return strings.ToLower(base32Encoder.EncodeToString(secret))
+	return base32Encoder.EncodeToString(secret)
 }
 
 func DecodeBase32(secret string) ([]byte, error) {
-	return base32Encoder.DecodeString(strings.ToUpper(secret))
+	return base32Encoder.DecodeString(secret)
 }
 
 func DecodeBase32String(secret string) (dst string, err error) {
