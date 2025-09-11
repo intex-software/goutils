@@ -4,6 +4,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"errors"
+	"strings"
 
 	"github.com/intex-software/goutils/internal"
 )
@@ -26,7 +27,7 @@ func (c krypta) decrypt(encoded string) (string, error) {
 	if len(encoded) == 0 {
 		return encoded, nil
 	}
-	cipherText, err := internal.Base32.DecodeString(encoded)
+	cipherText, err := internal.Base32.DecodeString(strings.ToLower(encoded))
 	if err != nil {
 		return encoded, err
 	}
